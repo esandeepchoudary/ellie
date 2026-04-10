@@ -56,42 +56,79 @@ src/main/java/com/llmpentest/
 
 ---
 
-## Build Requirements
+## Build & Install
 
-- **Java 17+** (`java -version`)
-- **Maven 3.8+** (`mvn -version`)
-- **Burp Suite Professional or Community Edition** (2023.10+)
-- Internet access to download Maven dependencies
+### Prerequisites
+
+| Tool | Minimum version | Check |
+|---|---|---|
+| Java JDK | 17 | `java -version` |
+| Apache Maven | 3.8 | `mvn -version` |
+| Burp Suite | 2023.10 (Pro or Community) | — |
+
+> **Linux / macOS**: Install via `sdkman`, `brew`, or your package manager.  
+> **Windows**: Download from [adoptium.net](https://adoptium.net) (JDK) and [maven.apache.org](https://maven.apache.org/download.cgi) (Maven), then add both to `PATH`.
 
 ---
 
-## Building
+### Step 1 — Clone and build
 
 ```bash
-git clone <this-repo>
-cd llm-pentest-burp
+git clone https://github.com/esandeepchoudary/bur-pai.git
+cd bur-pai
 mvn package -DskipTests
 ```
 
-The shaded (fat) JAR is output to:
+Maven downloads dependencies on first run (OkHttp, Gson, FlatLaf). The shade plugin bundles them with relocated packages so they don't conflict with other Burp extensions.
+
+Successful output ends with:
 ```
-target/llm-pentest-burp-1.1.0.jar
+[INFO] BUILD SUCCESS
 ```
 
-The Maven shade plugin bundles OkHttp, Gson, and FlatLaf with relocated packages
-so they don't conflict with other Burp extensions.
+The output JAR is at:
+```
+target/llm-pentest-burp-1.2.0.jar
+```
 
 ---
 
-## Installation
+### Step 2 — Load into Burp Suite
 
-1. Open Burp Suite
-2. Go to **Extensions** → **Installed** → **Add**
-3. Extension type: **Java**
-4. Select `target/llm-pentest-burp-1.1.0.jar`
-5. Click **Next** — you should see "✓ LLM PenTest Assistant v1.1.0 loaded" in the output
+1. Open **Burp Suite** and start or open a project.
+2. Click the **Extensions** tab in the top navigation bar.
+3. Under the **Installed** sub-tab, click **Add**.
+4. In the dialog that appears:
+   - **Extension type**: `Java`
+   - **Extension file**: click **Select file…** and navigate to `target/llm-pentest-burp-1.2.0.jar`
+5. Click **Next**.
+6. Watch the **Output** pane — you should see:
+   ```
+   ✓ LLM PenTest Assistant v1.2.0 loaded
+     ✓ Passive scanner registered (Burp Pro)
+     ✓ interactsh registered: <your-domain>.oast.pro
+   ```
+   On Community Edition the passive scanner line is replaced with a warning — all other features still work.
 
 A new **"LLM PenTest Assistant"** tab appears in Burp's main tab bar.
+
+---
+
+### Step 3 — Configure your LLM provider
+
+Open the **⚙️ Settings** tab inside the extension:
+
+1. Select your **Provider** from the dropdown (Anthropic, OpenAI, Ollama, or Custom).
+2. Enter your **API Key** (not required for Ollama).
+3. Set the **Model** (defaults are auto-filled per provider).
+4. Click **🔍 Test Connection** to verify before scanning.
+5. Click **💾 Save Settings**.
+
+**Ollama (local models):**
+- Start Ollama locally: `ollama serve`
+- Pull a model: `ollama pull llama3` (or `mistral`, `qwen2.5-coder`, etc.)
+- The endpoint auto-fills to `http://localhost:11434/api/chat` — no API key needed.
+- To use a remote Ollama instance, change the endpoint URL accordingly.
 
 ---
 
