@@ -5,16 +5,44 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build & Run
 
 ```bash
-# Build (produces shaded fat JAR)
+# Build (produces shaded fat JAR, skip tests)
 mvn package -DskipTests
 
+# Build + run full test suite (90 tests)
+mvn package
+
 # Output JAR
-target/llm-pentest-burp-1.1.0.jar
+target/llm-pentest-burp-1.2.0.jar
 ```
 
 Install into Burp Suite: **Extensions → Installed → Add → Java → select the JAR**.
 
 Requirements: Java 17+, Maven 3.8+, Burp Suite 2023.10+.
+
+## Working Conventions
+
+These are the things the user always expects — do them without being asked.
+
+### After every code change
+1. **Build first, fix before proceeding**: run `mvn package -DskipTests`. If it fails, fix compilation errors before making any other changes.
+2. **Run the full test suite**: run `mvn package` (includes tests). All 90 tests must pass before pushing.
+3. **Commit and push**: stage only relevant files (not unrelated modified files), write a clear commit message covering what changed and why, then `git push origin master`.
+
+### When adding features or fixing bugs
+- **Read the file before editing it.** Never propose changes to code you haven't seen.
+- **Check all three LLM client touch points** when adding a new provider: `buildRequestBody()`, `buildHttpRequest()`, `extractContent()` in `LLMClient.java`, plus `ExtensionConfig.LLMProvider` enum + `getDefaultModel()`, plus `SettingsPanel.onProviderChange()`.
+- **Write tests** for any new feature or bug fix. Tests live in `src/test/java/com/llmpentest/` mirroring the main source tree. Use JUnit 5 + Mockito. Mock Burp API interfaces (they are interfaces, Mockito handles them). Use `MockWebServer` (`okhttp3.mockwebserver`) for `LLMClient` HTTP tests — **not** `mockwebserver3`.
+- **Audit for loose ends** before pushing: check all files touched by the change for crash bugs, wrong assumptions, operator precedence issues, and index-out-of-bounds on edge cases.
+
+### Montoya API gotchas
+- `ConsolidationAction` is in `burp.api.montoya.scanner`, **not** `burp.api.montoya.scanner.consolidation`.
+- MockWebServer JAR ships classes under `okhttp3.mockwebserver`, not `mockwebserver3`.
+- `ExtensionConfig.setProvider()` must capture the **old** provider before reassigning `this.provider`, otherwise the auto-fill guards compare new-to-new and always trigger.
+
+### Commit hygiene
+- Stage specific files by name — never `git add -A` or `git add .`.
+- Include `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>` in every commit.
+- Do not amend existing commits; always create a new one.
 
 ## Architecture
 
