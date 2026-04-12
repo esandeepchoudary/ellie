@@ -1,7 +1,7 @@
 # LLM PenTest Assistant — Burp Suite Extension
 
 > AI-powered web penetration testing automation via Large Language Models.  
-> Supports Anthropic Claude, OpenAI GPT, and Ollama (local models).
+> Supports Anthropic Claude, OpenAI GPT, Groq, and Ollama (local models).
 
 ---
 
@@ -9,16 +9,17 @@
 
 | Feature | Description |
 |---|---|
+| **AI Agent** | Natural language security testing — ask questions, get live results with expandable detail, "What Worked / What Didn't" summaries |
 | **Passive Scanner** | Hooks into Burp's scan pipeline; every proxied request analyzed by LLM in a virtual thread |
 | **Active Scanner** | LLM identifies injection points, generates probes, sends them, scores responses |
-| **AI Testing** | Provide custom instructions, execute tests across requests, get results with summary |
 | **Traffic Analyzer** | Import target traffic, LLM analyzes for vulnerabilities and proposes new test cases |
-| **Workbench** | Paste any request/response for on-demand analysis, explanation, or custom questions |
+| **Dashboard** | Vulnerability type breakdown, finding trend chart, duplicate-merged stats, recent findings |
+| **Findings Table** | Sortable/filterable by severity with full-text search, bulk status changes, and full detail pane |
 | **Payload Generator** | 26 vuln types, WAF bypass variants, OOB payloads → Burp Intruder-ready |
-| **Findings Table** | Sortable/filterable by severity with full detail, raw HTTP, and LLM analysis pane |
 | **HTML/MD Reports** | Standalone styled HTML report or Markdown export of all findings |
 | **Context Menu** | Right-click any request in Proxy/Repeater → "🤖 LLM PenTest" submenu |
-| **Multi-Provider** | Anthropic Claude, OpenAI GPT-4o, Ollama, or any LiteLLM-compatible endpoint |
+| **Multi-Provider** | Anthropic Claude, OpenAI GPT-4o, Groq, Ollama, or any OpenAI-compatible endpoint |
+| **Fetch Models** | Pull available models directly from your provider and populate the model dropdown |
 | **Rate Limiting** | Configurable req/min to avoid burning API quota |
 | **Persistent Settings** | All config saved in Burp's project-level preference store |
 
@@ -32,27 +33,28 @@ src/main/java/com/llmpentest/
 ├── LLMHttpHandler.java            ← HTTP interception hook (pass-through by default)
 │
 ├── api/
-│   └── LLMClient.java             ← Unified LLM client: Anthropic / OpenAI / Ollama
+│   └── LLMClient.java             ← Unified LLM client: Anthropic / OpenAI / Ollama / Groq
 │
 ├── model/
 │   ├── ExtensionConfig.java       ← All settings, persisted via Burp's PersistedObject
-│   └── Finding.java               ← Vulnerability finding POJO
+│   └── Finding.java              ← Vulnerability finding POJO
 │
 ├── scanner/
 │   ├── LLMScannerCheck.java       ← Burp ScanCheck: passive analysis hook
-│   └── ActiveScanOrchestrator.java← LLM-driven active scanning pipeline
+│   ├── AITestOrchestrator.java    ← AI Agent test runner with chain-of-thought
+│   └── TargetTrafficAnalyzer.java ← LLM traffic analysis + vuln proposal
 │
 ├── report/
 │   └── ReportExporter.java        ← HTML and Markdown report generation
 │
 └── ui/
     ├── MainPanel.java             ← Burp tab host
-    ├── DashboardPanel.java        ← Stats cards + recent findings
-    ├── FindingsPanel.java         ← Sortable findings table + detail pane
-    ├── WorkbenchPanel.java        ← Manual request/response analysis
-    ├── ActiveScanPanel.java       ← Active scan UI with live progress log
+    ├── DashboardPanel.java        ← Stats cards, vuln breakdown, trend chart
+    ├── FindingsPanel.java         ← Findings table with search and bulk actions
+    ├── AITestingPanel.java        ← AI Agent: natural language testing UI
+    ├── TrafficAnalyzerPanel.java  ← Import and analyze target traffic
     ├── PayloadsPanel.java         ← Payload generation UI
-    ├── SettingsPanel.java         ← Provider config, API keys, scan options
+    ├── SettingsPanel.java         ← Provider config, model picker, scan options
     └── ContextMenuProvider.java   ← Right-click menu
 ```
 
@@ -90,7 +92,7 @@ Successful output ends with:
 
 The output JAR is at:
 ```
-target/llm-pentest-burp-1.2.0.jar
+target/llm-pentest-burp-1.4.0.jar
 ```
 
 ---
@@ -102,11 +104,11 @@ target/llm-pentest-burp-1.2.0.jar
 3. Under the **Installed** sub-tab, click **Add**.
 4. In the dialog that appears:
    - **Extension type**: `Java`
-   - **Extension file**: click **Select file…** and navigate to `target/llm-pentest-burp-1.2.0.jar`
+   - **Extension file**: click **Select file…** and navigate to `target/llm-pentest-burp-1.4.0.jar`
 5. Click **Next**.
 6. Watch the **Output** pane — you should see:
    ```
-   ✓ LLM PenTest Assistant v1.2.0 loaded
+   ✓ LLM PenTest Assistant v1.4.0 loaded
      ✓ Passive scanner registered (Burp Pro)
      ✓ interactsh registered: <your-domain>.oast.pro
    ```
@@ -120,16 +122,17 @@ A new **"LLM PenTest Assistant"** tab appears in Burp's main tab bar.
 
 Open the **⚙️ Settings** tab inside the extension:
 
-1. Select your **Provider** from the dropdown (Anthropic, OpenAI, Ollama, or Custom).
+1. Select your **Provider** from the dropdown (Anthropic, OpenAI, Groq, Ollama, or Custom).
 2. Enter your **API Key** (not required for Ollama).
-3. Set the **Model** (defaults are auto-filled per provider).
+3. Set the **Model** — click **Fetch Models** to pull available models from your provider and select from the dropdown.
 4. Click **🔍 Test Connection** to verify before scanning.
 5. Click **💾 Save Settings**.
 
 **Ollama (local models):**
 - Start Ollama locally: `ollama serve`
 - Pull a model: `ollama pull llama3` (or `mistral`, `qwen2.5-coder`, etc.)
-- The endpoint auto-fills to `http://localhost:11434/api/chat` — no API key needed.
+- The endpoint auto-fills to `http://localhost:11434` — no API key needed.
+- Click **Fetch Models** to populate the model dropdown from your Ollama instance.
 - To use a remote Ollama instance, change the endpoint URL accordingly.
 
 ---
@@ -144,10 +147,9 @@ Open the **⚙️ Settings** tab:
 |---|---|---|
 | Anthropic (Claude) | `claude-opus-4-20250514`, `claude-sonnet-4-6` | Yes — [console.anthropic.com](https://console.anthropic.com) |
 | OpenAI (GPT) | `gpt-4o`, `gpt-4-turbo` | Yes — [platform.openai.com](https://platform.openai.com) |
+| Groq | `llama-3.3-70b`, `mixtral-8x7b` | Yes — [console.groq.com](https://console.groq.com) |
 | Ollama (Local) | `llama3`, `mistral`, `qwen2.5-coder` | No |
 | Custom / LiteLLM | Any OpenAI-compatible endpoint | Depends |
-
-**Ollama** requires a running local instance: `ollama serve`
 
 ### Scan Settings
 
@@ -156,11 +158,22 @@ Open the **⚙️ Settings** tab:
 - **Rate limit (req/min)** — prevents hitting provider rate limits
 - **Min confidence (%)** — filters out low-confidence LLM findings before they appear in the table
 
-Click **🔍 Test Connection** to verify your API key before scanning.
-
 ---
 
 ## Usage
+
+### AI Agent
+
+The **🤖 AI Agent** tab replaces the old Workbench. Ask natural language questions about your target:
+
+- What vulnerabilities might exist in this request?
+- Test for SQL injection by injecting payloads into all parameters
+- Check for information disclosure in error responses
+- Test authentication bypass scenarios
+
+Quick-action presets for SQLi, XSS, Auth Bypass, IDOR, SSRF, and Info Disclosure are available. Results appear in a live expandable table showing what worked, what didn't, and a summary grouped by vulnerability type.
+
+**Context menu**: Right-click any request → "Send to AI Agent" to pre-populate the agent with the request.
 
 ### Passive Scanning
 
@@ -168,39 +181,15 @@ Click **🔍 Test Connection** to verify your API key before scanning.
 2. In the **📊 Dashboard** tab, click **▶ Enable Passive Scan**
 3. Browse your target application through Burp's proxy
 4. Findings appear in the **🎯 Findings** tab as they're discovered
-5. Click any finding row to see full detail, PoC, and raw HTTP
+5. Use the search bar to filter, and bulk-change status (Confirmed / False Positive / Remediated)
 
-### Active Scanning
+### Traffic Analyzer
 
-1. Right-click a request in Proxy/Repeater → **🤖 LLM PenTest** → **Send to Active Scan**  
-   *or* paste a request directly in the **🎯 Active Scan** tab
-2. Set the target host, port, and HTTPS toggle
-3. Click **🚀 Start Active Scan**
-4. Watch the live log as the LLM:
-   - Identifies injection points
-   - Generates targeted probes
-   - Sends mutated requests
-   - Scores responses for vulnerability indicators
-
-### Manual Workbench
-
-The **🔬 Workbench** tab lets you:
-- Analyze a request/response pair for vulnerabilities
-- Get a plain-English explanation of what an endpoint does
-- Generate payloads for a specific parameter
-- Ask any free-form security question about the traffic
-
-### Payload Generator
-
-The **💣 Payloads** tab covers 26 vulnerability types including:
-- SQL Injection (regular, blind, time-based)
-- XSS (reflected, stored, DOM)
-- SSRF, XXE, SSTI, Command Injection
-- JWT attacks, GraphQL, Prototype Pollution
-- Log4Shell, Java/PHP deserialization, and more
-
-Tick **WAF bypass** and **OOB payloads** for more comprehensive coverage.  
-Use **🎯 Copy for Intruder** to strip headers/labels and get a clean payload list.
+The **📡 Traffic Analyzer** tab lets you:
+- Import target traffic from sitemap or HAR files
+- Let the LLM analyze the full request/response history
+- Get a vulnerability report with CWE IDs, severity, confidence, and PoC
+- Automatically propose new test cases based on discovered patterns
 
 ### Context Menu
 
@@ -208,6 +197,7 @@ Right-click any request in Proxy, Repeater, or Intruder:
 
 ```
 🤖 LLM PenTest
+  ├── Send to AI Agent
   ├── Analyze for Vulnerabilities
   ├── Explain Request/Response
   └── Generate Payloads...
@@ -284,10 +274,14 @@ Encoding types: `raw`, `url` (percent-encoded), `b64` (base64) — chosen per pa
 
 ### Adding a new LLM provider
 
-1. Add an entry to `ExtensionConfig.LLMProvider` enum
-2. Add a case in `LLMClient.buildRequestBody()` to format the request body
-3. Add a case in `LLMClient.buildHttpRequest()` for auth headers
-4. Add a case in `LLMClient.extractContent()` to parse the response
+Four methods in `LLMClient.java` need changes:
+
+1. `buildRequestBody()` — format request JSON
+2. `buildHttpRequest()` — set auth headers
+3. `extractContent()` — parse response
+4. `getDefaultModel()` — return default model name
+
+Also update: `ExtensionConfig.LLMProvider` enum + `SettingsPanel.onProviderChange()` + `testConnection()` + `fetchAvailableModels()`.
 
 ### Adding a new UI panel
 
