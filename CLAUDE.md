@@ -8,11 +8,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Build (produces shaded fat JAR, skip tests)
 mvn package -DskipTests
 
-# Build + run full test suite (90 tests)
+# Build + run full test suite (112 tests)
 mvn package
 
 # Output JAR
-target/llm-pentest-burp-1.2.0.jar
+target/llm-pentest-burp-1.4.0.jar
 ```
 
 Install into Burp Suite: **Extensions → Installed → Add → Java → select the JAR**.
@@ -25,13 +25,14 @@ These are the things the user always expects — do them without being asked.
 
 ### After every code change
 1. **Build first, fix before proceeding**: run `mvn package -DskipTests`. If it fails, fix compilation errors before making any other changes.
-2. **Run the full test suite**: run `mvn package` (includes tests). All 90 tests must pass before pushing.
-3. **Commit and push**: stage only relevant files (not unrelated modified files), write a clear commit message covering what changed and why, then `git push origin master`.
+2. **Run the full test suite**: run `mvn package` (includes tests). All 112 tests must pass before pushing.
+3. **Commit and push**: stage only relevant files (by name), write a clear commit message covering what changed and why, then `git push origin master`.
 
 ### When adding features or fixing bugs
 - **Read the file before editing it.** Never propose changes to code you haven't seen.
 - **Check all three LLM client touch points** when adding a new provider: `buildRequestBody()`, `buildHttpRequest()`, `extractContent()` in `LLMClient.java`, plus `ExtensionConfig.LLMProvider` enum + `getDefaultModel()`, plus `SettingsPanel.onProviderChange()`.
 - **Write tests** for any new feature or bug fix. Tests live in `src/test/java/com/llmpentest/` mirroring the main source tree. Use JUnit 5 + Mockito. Mock Burp API interfaces (they are interfaces, Mockito handles them). Use `MockWebServer` (`okhttp3.mockwebserver`) for `LLMClient` HTTP tests — **not** `mockwebserver3`.
+- **Keep UI tabs unique** — avoid features that duplicate existing tabs.
 - **Audit for loose ends** before pushing: check all files touched by the change for crash bugs, wrong assumptions, operator precedence issues, and index-out-of-bounds on edge cases.
 
 ### Montoya API gotchas
@@ -40,7 +41,7 @@ These are the things the user always expects — do them without being asked.
 - `ExtensionConfig.setProvider()` must capture the **old** provider before reassigning `this.provider`, otherwise the auto-fill guards compare new-to-new and always trigger.
 
 ### Commit hygiene
-- Stage specific files by name — never `git add -A` or `git add .`.
+- Stage specific files by name — never `git add -A` or `git add .` unless the change is truly all-inclusive.
 - Include `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>` in every commit.
 - Do not amend existing commits; always create a new one.
 
@@ -58,23 +59,14 @@ This is a **Burp Suite extension** built on the Montoya API. The entry point is 
    - **Track 4**: `SessionContextAnalyzer` — multi-request sliding window; triggers LLM async for IDOR/business logic
 3. Findings flow into `LLMScannerCheck`'s `CopyOnWriteArrayList<Finding>` and are broadcast to registered `Consumer<Finding>` listeners (used by UI panels)
 
-### Active scan pipeline
-
-`ActiveScanOrchestrator` drives a 5-step LLM pipeline:
-1. Identify injection points → JSON array
-2. Generate probes per injection point → JSON array
-3. Mutate and send requests via Burp HTTP engine
-4. LLM scores baseline vs mutated response
-5. Emit `Finding` if confidence ≥ threshold
-
-Encoding types: `raw`, `url`, `b64`.
-
 ### LLM client
 
 `LLMClient` is the unified API client. Adding a new provider requires changes in three methods:
 - `buildRequestBody()` — format the request JSON
 - `buildHttpRequest()` — set auth headers
 - `extractContent()` — parse the response
+
+`UsageTracker` in `util/` tracks API requests, tokens, and estimated costs per provider.
 
 Bundled dependencies (OkHttp, Gson) are **shaded and relocated** to `com.llmpentest.shaded.*` to avoid conflicts with other Burp extensions.
 
@@ -91,13 +83,12 @@ Bundled dependencies (OkHttp, Gson) are **shaded and relocated** to `com.llmpent
 | Package | Purpose |
 |---|---|
 | `com.llmpentest` | Extension entry point + HTTP handler |
-| `com.llmpentest.api` | LLM provider client + exception types |
+| `com.llmpentest.api` | LLM provider client + `UsageTracker` |
 | `com.llmpentest.model` | `Finding` POJO + `ExtensionConfig` |
-| `com.llmpentest.scanner` | Passive and active scan logic |
+| `com.llmpentest.scanner` | Passive scan logic, `AITestOrchestrator`, `TargetTrafficAnalyzer` |
 | `com.llmpentest.checks` | Deterministic checks (headers, sensitive data, session, interactsh) |
 | `com.llmpentest.ui` | Swing panels registered as Burp suite tabs |
-| `com.llmpentest.report` | HTML and Markdown report generation |
-| `com.llmpentest.util` | CVSS calculator, finding deduplicator |
+| `com.llmpentest.util` | `FindingDeduplicator`, `UsageTracker`, `CvssCalculator` |
 
 ### UI panels
 
@@ -105,4 +96,4 @@ All panels extend `JPanel` and are registered in `MainPanel.initUI()`. They rece
 
 ### Finding lifecycle
 
-`Finding` objects have a `Source` enum (`PASSIVE_SCAN`, `ACTIVE_SCAN`, `WORKBENCH`, `MANUAL`). `FindingDeduplicator` in `util/` prevents duplicate findings from filling the table. `CvssCalculator` in `util/` computes CVSS scores from severity/type metadata.
+`Finding` objects have a `Source` enum (`PASSIVE_SCAN`, `ACTIVE_SCAN`, `MANUAL`, `TRAFFIC_ANALYSIS`). `FindingDeduplicator` in `util/` prevents duplicate findings from filling the table.
