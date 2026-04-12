@@ -9,10 +9,11 @@
 
 | Feature | Description |
 |---|---|
-| **AI Agent** | Natural language security testing — ask questions, get live results with expandable detail, "What Worked / What Didn't" summaries |
+| **AI Agent** | Conversational security testing — chat with the AI about requests, get live results, multi-turn adaptive testing, and deep-dive into findings |
 | **Passive Scanner** | Hooks into Burp's scan pipeline; every proxied request analyzed by LLM in a virtual thread |
 | **Active Scanner** | LLM identifies injection points, generates probes, sends them, scores responses |
 | **Traffic Analyzer** | Import target traffic, LLM analyzes for vulnerabilities and proposes new test cases |
+| **False Positive Check** | Right-click any Burp finding → AI analysis to confirm if it's a true or false positive |
 | **Dashboard** | Vulnerability type breakdown, finding trend chart, duplicate-merged stats, recent findings |
 | **Findings Table** | Sortable/filterable by severity with full-text search, bulk status changes, and full detail pane |
 | **Payload Generator** | 26 vuln types, WAF bypass variants, OOB payloads → Burp Intruder-ready |
@@ -164,16 +165,21 @@ Open the **⚙️ Settings** tab:
 
 ### AI Agent
 
-The **🤖 AI Agent** tab replaces the old Workbench. Ask natural language questions about your target:
+The **🤖 AI Agent** tab provides a conversational interface for security testing. Ask natural language questions about your target:
 
-- What vulnerabilities might exist in this request?
-- Test for SQL injection by injecting payloads into all parameters
-- Check for information disclosure in error responses
-- Test authentication bypass scenarios
+- "What vulnerabilities might exist in this request?"
+- "Test for SQL injection by injecting payloads into all parameters"
+- "Explain this request/response interaction"
+- "Check for information disclosure in error responses"
 
-Quick-action presets for SQLi, XSS, Auth Bypass, IDOR, SSRF, and Info Disclosure are available. Results appear in a live expandable table showing what worked, what didn't, and a summary grouped by vulnerability type.
+**Key Features:**
+- **Conversational UI**: Maintains session history for follow-up questions.
+- **Multi-Turn Adaptive Testing**: The AI analyzes responses and dynamically generates follow-up probes to confirm vulnerabilities.
+- **Live Streaming Results**: Watch as the AI plans and executes tests in real-time.
+- **Finding Deep-Dive**: Click "Details" on any result to view full traffic and start a sub-chat specifically about that finding.
+- **Repeater Integration**: Send any AI-generated PoC directly to Burp Repeater for manual verification.
 
-**Context menu**: Right-click any request → "Send to AI Agent" to pre-populate the agent with the request.
+**Context menu**: Right-click any request → "🤖 LLM PenTest" → "Send to AI Agent".
 
 ### Passive Scanning
 
@@ -200,11 +206,18 @@ Right-click any request in Proxy, Repeater, or Intruder:
   ├── Send to AI Agent
   ├── Analyze for Vulnerabilities
   ├── Explain Request/Response
+  ├── AI: Targeted Scan on... (sub-menu with params)
   └── Generate Payloads...
         ├── SQL Injection
         ├── XSS (Reflected)
-        ├── SSRF
         └── ... (12 types)
+```
+
+Right-click any **Finding** in Burp's Scanner results:
+
+```
+🤖 LLM PenTest
+  └── AI: Analyze for False Positive
 ```
 
 ---
