@@ -11,6 +11,8 @@
 |---|---|
 | **Passive Scanner** | Hooks into Burp's scan pipeline; every proxied request analyzed by LLM in a virtual thread |
 | **Active Scanner** | LLM identifies injection points, generates probes, sends them, scores responses |
+| **AI Testing** | Provide custom instructions, execute tests across requests, get results with summary |
+| **Traffic Analyzer** | Import target traffic, LLM analyzes for vulnerabilities and proposes new test cases |
 | **Workbench** | Paste any request/response for on-demand analysis, explanation, or custom questions |
 | **Payload Generator** | 26 vuln types, WAF bypass variants, OOB payloads → Burp Intruder-ready |
 | **Findings Table** | Sortable/filterable by severity with full detail, raw HTTP, and LLM analysis pane |
