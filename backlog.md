@@ -13,3 +13,4 @@
 #nice to have
 
 #bugs
+- right click to send to the AI Agent not available in proxy and repeater tab. is onky available in the target tab
