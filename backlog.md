@@ -6,6 +6,10 @@
 - Chat in AI Agent tab retains full context of test results (summary added to conversation history)
 - UI responsive layout: removed fixed pixel max-heights across Dashboard, OOB, Settings panels; OOBPanel sidebar is now a resizable JSplitPane
 - Provider/model in extension header now updates live when settings are saved (was static, showed stale values)
+- AI Agent: plan-first execution — test plan shown in chat before any test runs (⏳ → ✅/🔴 live updates)
+- AI Agent: sequential execution — tests run in plan order, results appear in sequence
+- AI Agent: Details dialog now shows the actual HTTP request sent (not an LLM description); CRLF normalization fixed in request parser
+- AI Agent: result cards no longer capped at 60px; observation snippet visible inline
 
 #to do
 - Enable the user to drill down into the request and response for each request being sent by the AI Agent
