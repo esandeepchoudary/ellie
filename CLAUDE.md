@@ -25,8 +25,17 @@ These are the things the user always expects — do them without being asked.
 
 ### After every code change
 1. **Build first, fix before proceeding**: run `mvn package -DskipTests`. If it fails, fix compilation errors before making any other changes.
-2. **Run the full test suite**: run `mvn package` (includes tests). All 112 tests must pass before pushing.
-3. **Commit and push**: stage only relevant files (by name), write a clear commit message covering what changed and why, then `git push origin master`.
+2. **Run the full test suite**: run `mvn package` (includes tests). All tests must pass before pushing.
+3. **Update the backlog**: edit `backlog.md` to move completed items into `#complete` and remove them from `#to do` or `#bugs`. Do this before committing.
+4. **Commit and push**: stage only relevant files (by name, always include `backlog.md` when it changed), write a clear commit message covering what changed and why, then `git push origin master`.
+
+### Backlog (`backlog.md`)
+`backlog.md` is the single source of truth for work in flight. Keep it accurate at all times:
+- **When starting work on an item**: leave it in `#to do` / `#bugs` until it is fully done.
+- **When an item is complete**: move it verbatim to `#complete` in the same commit that delivers the code.
+- **When discovering a new bug or idea mid-task**: add it to `#bugs` or `#to do` before the commit.
+- **Never leave stale entries**: if something was fixed or is no longer relevant, remove or update it rather than leaving outdated text.
+- Always stage and commit `backlog.md` together with the code change it reflects — never in a separate cleanup commit.
 
 ### Versioning
 The project uses **semantic versioning** (`MAJOR.MINOR.PATCH`). Update the version in **all four places** together whenever a feature or fix lands:
