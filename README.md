@@ -101,7 +101,7 @@ Successful output ends with:
 
 The output JAR is at:
 ```
-target/llm-pentest-burp-1.3.0.jar
+target/llm-pentest-burp-1.4.0.jar
 ```
 
 ---
@@ -113,11 +113,11 @@ target/llm-pentest-burp-1.3.0.jar
 3. Under the **Installed** sub-tab, click **Add**.
 4. In the dialog that appears:
    - **Extension type**: `Java`
-   - **Extension file**: click **Select file…** and navigate to `target/llm-pentest-burp-1.3.0.jar`
+   - **Extension file**: click **Select file…** and navigate to `target/llm-pentest-burp-1.4.0.jar`
 5. Click **Next**.
 6. Watch the **Output** pane — you should see:
    ```
-   ✓ LLM PenTest Assistant v1.3.0 loaded
+   ✓ LLM PenTest Assistant v1.4.0 loaded
      ✓ Passive scanner registered (Burp Pro)
      ✓ interactsh registered: <your-domain>.oast.pro
    ```

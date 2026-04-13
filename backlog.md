@@ -11,22 +11,22 @@
 - AI Agent: Details dialog now shows the actual HTTP request sent (not an LLM description); CRLF normalization fixed in request parser
 - AI Agent: result cards no longer capped at 60px; observation snippet visible inline
 - AI Agent: LLM-generated narrative summary of all test cases and observed outcomes
+- AI Agent: WAF detection + auto-bypass — 403/406/429 with WAF fingerprints automatically queues URL-encoded and comment-obfuscated variants
+- AI Agent: interactive plan editing — editable plan card with checkboxes and "▶ Execute Plan" button before any tests run
+- AI Agent: re-run individual test — "↻" button on each result card re-executes that single test without restarting the full run
+- AI Agent: stop-at-first-finding — "Stop on 1st vuln" checkbox halts execution on the first confirmed vulnerability
+- AI Agent: export partial results on stop — "Export partial results?" dialog when user stops a run mid-way
+- AI Agent: keyboard shortcuts — Ctrl+Enter to send chat, Esc to stop active run
 
 #to do
 
 ## AI Agent — intelligence
-- WAF detection + auto-bypass pivot: when a test returns 403/406 with WAF fingerprints in the response, automatically generate and queue encoding/obfuscation variants before moving to the next test
-- Interactive plan editing: let the user add, remove, or reorder rows in the plan card before execution begins ("Edit Plan" button on the plan card)
-- Re-run individual test: button on each plan card row / result card to re-execute that single test case without restarting the full run
-- Stop-at-first-finding mode: option (toggle in Settings or on the Run Tests bar) to halt execution immediately after the first confirmed vulnerability
 - Multi-request correlation: when multiple requests are loaded, detect CSRF token / session dependencies between them and sequence tests accordingly
 - Auth refresh mid-run: detect 401/403 responses caused by token expiry during a run and attempt automatic re-auth before retrying the failing test
 - Separate planner and tester agents: split into a planning agent (analyzes target, produces test plan) and an executor agent (runs tests, reports findings) running independently
 
 ## AI Agent — UX
 - Token / cost budget: show estimated API cost before a run starts (based on request size × test count), enforce a configurable hard cap per session
-- At user termination: when the user stops a run mid-way, prompt with "Export partial results?" before clearing the chat
-- Keyboard shortcuts: Ctrl+Enter to send chat message, Esc to stop active run
 
 ## Passive Scanner
 - False positive memory: when a finding is marked FP by the user, record the pattern (URL + vuln type + parameter) and suppress future identical matches from the same endpoint automatically
