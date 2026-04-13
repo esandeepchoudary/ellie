@@ -7,7 +7,7 @@
 - enable pause and play button for AI Agent
 - once execution is complete, enable transferring the content to a report export such as csv, json, html for AI Agent
 - at user terminiation provide an option to still export the results for AI Agent
-- 
+- let the user chat in the AI Agent tab with the context for the initial request and any test cases executed
 
 #nice to have
 
