@@ -8,6 +8,7 @@
 - once execution is complete, enable transferring the content to a report export such as csv, json, html for AI Agent
 - at user terminiation provide an option to still export the results for AI Agent
 - let the user chat in the AI Agent tab with the context for the initial request and any test cases executed
+- does it make sense to divide this into seperate agents that plan and test seperately
 
 #nice to have
 
