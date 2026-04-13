@@ -11,8 +11,8 @@ mvn package -DskipTests
 # Build + run full test suite (112 tests)
 mvn package
 
-# Output JAR
-target/llm-pentest-burp-1.4.0.jar
+# Output JAR  (name reflects current version in pom.xml)
+target/llm-pentest-burp-<version>.jar
 ```
 
 Install into Burp Suite: **Extensions → Installed → Add → Java → select the JAR**.
@@ -27,6 +27,15 @@ These are the things the user always expects — do them without being asked.
 1. **Build first, fix before proceeding**: run `mvn package -DskipTests`. If it fails, fix compilation errors before making any other changes.
 2. **Run the full test suite**: run `mvn package` (includes tests). All 112 tests must pass before pushing.
 3. **Commit and push**: stage only relevant files (by name), write a clear commit message covering what changed and why, then `git push origin master`.
+
+### Versioning
+The project uses **semantic versioning** (`MAJOR.MINOR.PATCH`). Update the version in **all four places** together whenever a feature or fix lands:
+1. `pom.xml` — `<version>` element (controls the output JAR filename)
+2. `LLMPenTestExtension.java` — `VERSION` constant and the Javadoc comment on the class
+3. `MainPanel.java` — the header label already reads `LLMPenTestExtension.VERSION` dynamically; no change needed there
+4. `README.md` — any literal `x.y.z` version strings (JAR path, sample output)
+
+Bump `PATCH` for bug fixes, `MINOR` for new features, `MAJOR` for breaking changes.
 
 ### When adding features or fixing bugs
 - **Read the file before editing it.** Never propose changes to code you haven't seen.
