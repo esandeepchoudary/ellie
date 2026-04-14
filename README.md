@@ -82,9 +82,19 @@ src/main/java/com/llmpentest/
 
 ---
 
-## Build & Install
+## Install
 
-### Prerequisites
+### Option A — Download the latest release (recommended)
+
+1. Go to the [**Releases**](https://github.com/esandeepchoudary/ellie/releases/latest) page and download `ellie-<version>.jar`.
+2. You only need **Java 17+** and **Burp Suite 2023.10+** — no build tools required.
+
+### Option B — Build from source
+
+<details>
+<summary>Click to expand build instructions</summary>
+
+**Prerequisites**
 
 | Tool | Minimum version | Check |
 |---|---|---|
@@ -95,10 +105,6 @@ src/main/java/com/llmpentest/
 > **Linux / macOS**: Install via `sdkman`, `brew`, or your package manager.  
 > **Windows**: Download from [adoptium.net](https://adoptium.net) (JDK) and [maven.apache.org](https://maven.apache.org/download.cgi) (Maven), then add both to `PATH`.
 
----
-
-### Step 1 — Clone and build
-
 ```bash
 git clone https://github.com/esandeepchoudary/ellie.git
 cd ellie
@@ -107,32 +113,25 @@ mvn package -DskipTests
 
 Maven downloads dependencies on first run (OkHttp, Gson, FlatLaf). The shade plugin bundles them with relocated packages so they don't conflict with other Burp extensions.
 
-Successful output ends with:
-```
-[INFO] BUILD SUCCESS
-```
+The output JAR is at `target/ellie-1.9.0.jar`.
 
-The output JAR is at:
-```
-target/ellie-1.9.0.jar
-```
+</details>
 
 ---
 
-### Step 2 — Load into Burp Suite
+### Load into Burp Suite
 
 1. Open **Burp Suite** and start or open a project.
 2. Click the **Extensions** tab in the top navigation bar.
 3. Under the **Installed** sub-tab, click **Add**.
 4. In the dialog that appears:
    - **Extension type**: `Java`
-   - **Extension file**: click **Select file…** and navigate to `target/ellie-1.9.0.jar`
+   - **Extension file**: click **Select file…** and navigate to the downloaded (or built) `ellie-<version>.jar`
 5. Click **Next**.
 6. Watch the **Output** pane — you should see:
    ```
-   ✓ ELLIE v1.8.0 loaded
+   ✓ ELLIE v1.9.0 loaded
      ✓ Passive scanner registered (Burp Pro)
-     ✓ interactsh registered: <your-domain>.oast.pro
    ```
    On Community Edition the passive scanner line is replaced with a warning — all other features still work.
 
