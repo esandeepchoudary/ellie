@@ -22,6 +22,8 @@
 - AI Agent: separate planner/tester agents — Planner Agent prompt (recon-first, 3-phase fingerprinting) and Tester Agent prompt (precise verification, no speculation)
 - AI Agent: token/cost budget — pre-run cost estimate shown in plan card, configurable hard cap per session via spinner; run halts when cap reached
 - AI Agent: actionable follow-up tests — when the AI's chat reply describes security tests, a "▶ Run These Tests" button appears below the bubble and feeds the reply as instructions into the planner
+- AI Agent: fix test-case generation 400 json_validate_failed — prompts now request {"testCases":[...]} wrapper (compatible with OpenAI/Groq json_object mode); extractJsonArray() fallback handles bare-object and mixed-text responses
+- AI Agent: fix follow-up test parsing crash "JsonObject" — normalise followUpTests field to array even when LLM returns a single object instead of an array
 
 #to do
 
