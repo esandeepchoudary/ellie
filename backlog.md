@@ -57,6 +57,7 @@
 - AI Agent: fixed horizontal overflow — chat panel now implements Scrollable (getScrollableTracksViewportWidth=true) so content fits the viewport width instead of expanding horizontally; removed 30px left indent on result/export cards
 - AI Agent: applyTransformations() audit — fixed modifyQueryParam() (was using full URL instead of path; rewrote to parse request line directly); fixed isHeader() removing "token"/"api-key"/"api-token" false positives; fixed form-encoded body injection branch; fixed SQLi/SSTI no-op fallback via injectIntoBodyOrAppend(); 13 new unit tests covering all transformation types
 - AI Agent: conversational test requests now route directly to the test plan flow — when a user types a test request ("test for XSS", "find SQL injection", etc.) with a request loaded, ELLIE skips the LLM chat round-trip and goes straight to the plan-first execution flow
+- Passive scanner fix: DEFAULT_SYSTEM_PROMPT was including AI Agent workflow instructions ("EXECUTION ENVIRONMENT") that caused the LLM to return test plan JSON instead of the vulnerability finding schema; split into a neutral security analyst prompt (used by passive scanner) and an Agent execution-context block injected only into chat requests; auto-migrates saved v1.9.0 system prompt on load
 
 #to do
 
