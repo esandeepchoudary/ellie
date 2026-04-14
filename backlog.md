@@ -30,6 +30,7 @@
 - Traffic Analyzer: error endpoint priority — 5xx/4xx endpoints surfaced first in analysis prompt with response body snippets
 - Traffic Analyzer: chunked analysis — large traffic sets analyzed in batches of 35 endpoints; results merged with vuln/proposal deduplication
 - Traffic Analyzer: auth mapping — endpoints without auth headers flagged as [NO-AUTH] in prompt to guide bypass testing
+- Traffic Analyzer: post-analysis chat — after analysis completes, a full chat panel appears below results; LLM has complete context of all endpoints, vulnerabilities, tech stack, and business logic; 6 quick-question chips for common questions; multi-turn conversation history
 
 #to do
 
