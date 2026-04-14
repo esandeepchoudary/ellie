@@ -39,6 +39,13 @@
 - Traffic Analyzer: auth mapping — endpoints without auth headers flagged as [NO-AUTH] in prompt to guide bypass testing
 - Traffic Analyzer: post-analysis chat — after analysis completes, a full chat panel appears below results; LLM has complete context of all endpoints, vulnerabilities, tech stack, and business logic; 6 quick-question chips for common questions; multi-turn conversation history
 - LLM provider integrations hardened: Anthropic temperature now sent; Groq/OpenAI get response_format:json_object, Custom does not; Custom provider no longer requires API key (supports unauthenticated local proxies); Ollama connection test and model fetch use configured endpoint instead of hardcoded localhost:11434; Settings checkboxes (in-scope only, skip static) now load saved state correctly
+- Settings: rate limit raised from 100 to 2000 req/min with step-10 increments; concurrency raised from 20 to 100
+- Settings: body size cap — configurable KB limit (4–512 KB) on request/response content sent to LLM; applied in buildHttpContextBlock and buildRequestBody
+- Settings: HTTP proxy support — route all LLM API calls through a configurable HTTP proxy; applied immediately on Save via OkHttpClient rebuild
+- Settings: per-provider model memory — switching provider now restores the last model you chose for that provider
+- Settings: auto-test on save — connection test runs automatically in background after Save; result shown inline in status bar
+- Settings: live session usage panel — shows request count, token breakdown (in/out), estimated cost, and error count with Refresh and Reset buttons
+- Settings: max tokens raised to 32768 (was 8192); system prompt text area uses monospaced font
 
 #to do
 
@@ -64,7 +71,6 @@
 - Prompt compression: before sending to the LLM, intelligently truncate very large response bodies to avoid hitting token limits silently
 
 ## UX / Polish
-- Live cost tracker: running "~$0.04 used" indicator in the extension header that increments per LLM call using the UsageTracker data
 - Scan completion notification: OS-level or Burp-status-bar notification when a long AI Agent run finishes (so users don't have to watch the tab)
 
 #nice to have
