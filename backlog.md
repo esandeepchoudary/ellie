@@ -57,6 +57,9 @@
 - AI Agent: fixed horizontal overflow — chat panel now implements Scrollable (getScrollableTracksViewportWidth=true) so content fits the viewport width instead of expanding horizontally; removed 30px left indent on result/export cards
 - AI Agent: applyTransformations() audit — fixed modifyQueryParam() (was using full URL instead of path; rewrote to parse request line directly); fixed isHeader() removing "token"/"api-key"/"api-token" false positives; fixed form-encoded body injection branch; fixed SQLi/SSTI no-op fallback via injectIntoBodyOrAppend(); 13 new unit tests covering all transformation types
 - AI Agent: conversational test requests now route directly to the test plan flow — when a user types a test request ("test for XSS", "find SQL injection", etc.) with a request loaded, ELLIE skips the LLM chat round-trip and goes straight to the plan-first execution flow
+- AI Agent: confirmed vulnerabilities now auto-tracked — findings with a non-empty vulnerability field are automatically added to the shared Findings store (Dashboard + Findings table + Reports) as soon as each test result arrives; result cards show "✓ Tracked" badge; Inspect dialog shows "✓ Tracked in Findings"
+- Reports: added "AI Agent" to source filter dropdown; fixed getSelectedFindings() to use a parallel findings list keyed by row index instead of fragile truncated-URL string matching; added sourceLabel() helper for consistent source display
+- AI Agent: improved addToFindings() — title now includes vuln type + test name; uses mutatedRequest as raw request (actual HTTP sent); extracts real confidence from TestResult; sets evidence field from observation
 
 #to do
 
