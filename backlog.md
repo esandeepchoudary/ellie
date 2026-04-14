@@ -61,6 +61,7 @@
 - Reports: added "AI Agent" to source filter dropdown; fixed getSelectedFindings() to use a parallel findings list keyed by row index instead of fragile truncated-URL string matching; added sourceLabel() helper for consistent source display
 - AI Agent: improved addToFindings() — title now includes vuln type + test name; uses mutatedRequest as raw request (actual HTTP sent); extracts real confidence from TestResult; sets evidence field from observation
 - Reports: improved HTML report — modern CSS, executive summary severity cards, collapsible raw request/response via <details>, metadata grid with all fields (ID, source, CWE link, CVE, method, status, timestamp, tags as badges), confidence bar, per-finding remediation; Markdown report — executive summary table, all metadata fields, raw request/response in http code blocks; JSON export — complete schema with id, timestamp, cve, method, status, rawRequest, rawResponse, tags array; CSV export added (RFC 4180, 18 columns covering all finding fields)
+- Passive scanner: fixed system prompt mismatch — DEFAULT_SYSTEM_PROMPT is now a neutral security analyst prompt with no AI Agent execution-context instructions; AI Agent Burp-constraint context (EXECUTION ENVIRONMENT block) is injected only in buildHttpContextBlock() which is only called from chat requests; auto-migration resets any persisted v1.9.0 broken prompt on load
 
 #to do
 
@@ -94,3 +95,7 @@
 - Per-target LLM provider override: use a cheaper/faster model for passive scanning and a smarter model for AI Agent runs
 
 #bugs
+
+- **[MEDIUM] AI Agent `isDirectTestRequest()` false positives**: The security-term gate includes `lower.contains("this") || lower.contains("these") || lower.contains("it")` (AITestingPanel.java:616). Combined with broad action verbs like "check", "verify", "run", "try", this routes benign conversational messages ("check this endpoint", "verify it works", "run it again", "try it") directly to test plan generation instead of chat. Fix: remove those three terms; the other 40+ specific security terms are sufficient.
+
+- **[LOW] `LLMScannerCheck:109` unchecked severity access**: `f.getSeverity().label` will NPE if a `Finding` with null severity is ever passed to `addFinding()`. Currently safe because `parseFindingFromJson()` always sets severity, but fragile for future code paths. Fix: guard with `f.getSeverity() != null ? f.getSeverity().label : "INFO"`.

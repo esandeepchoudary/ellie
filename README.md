@@ -113,7 +113,7 @@ mvn package -DskipTests
 
 Maven downloads dependencies on first run (OkHttp, Gson, FlatLaf). The shade plugin bundles them with relocated packages so they don't conflict with other Burp extensions.
 
-The output JAR is at `target/ellie-1.9.3.jar`.
+The output JAR is at `target/ellie-1.9.4.jar`.
 
 </details>
 
@@ -130,7 +130,7 @@ The output JAR is at `target/ellie-1.9.3.jar`.
 5. Click **Next**.
 6. Watch the **Output** pane — you should see:
    ```
-   ✓ ELLIE v1.9.3 loaded
+   ✓ ELLIE v1.9.4 loaded
      ✓ Passive scanner registered (Burp Pro)
    ```
    On Community Edition the passive scanner line is replaced with a warning — all other features still work.
