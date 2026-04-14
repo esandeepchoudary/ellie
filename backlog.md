@@ -51,6 +51,7 @@
 - Public release risk mitigation: artifactId renamed from llm-pentest-burp to ellie (JAR is now ellie-1.8.0.jar, removing PortSwigger trademark exposure); LICENSE file added (MIT + Apache 2.0 attribution); first-run consent dialog explains LLM data forwarding, OOB disclosure, and authorized-use requirement; OOB/interactsh gated behind explicit opt-in toggle (off by default); Apache 2.0 NOTICE transformer added to shade plugin
 - AI Agent: fix follow-up test parse crash "JsonObject" — guard non-object array elements with isJsonObject() check; handle top-level JSON array wrapper; tolerate non-primitive modification values; error log now includes exception class name
 - AI Agent: horizontal scrollbar added to chat pane (was HORIZONTAL_SCROLLBAR_NEVER)
+- AI Agent: fixed horizontal overflow — chat panel now implements Scrollable (getScrollableTracksViewportWidth=true) so content fits the viewport width instead of expanding horizontally; removed 30px left indent on result/export cards
 
 #to do
 
