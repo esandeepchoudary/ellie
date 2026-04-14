@@ -100,8 +100,8 @@ src/main/java/com/llmpentest/
 ### Step 1 — Clone and build
 
 ```bash
-git clone https://github.com/esandeepchoudary/bur-pai.git
-cd bur-pai
+git clone https://github.com/esandeepchoudary/ellie.git
+cd ellie
 mvn package -DskipTests
 ```
 
