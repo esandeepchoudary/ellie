@@ -24,6 +24,11 @@
 - AI Agent: actionable follow-up tests — when the AI's chat reply describes security tests, a "▶ Run These Tests" button appears below the bubble and feeds the reply as instructions into the planner
 - AI Agent: fix test-case generation 400 json_validate_failed — prompts now request {"testCases":[...]} wrapper (compatible with OpenAI/Groq json_object mode); extractJsonArray() fallback handles bare-object and mixed-text responses
 - AI Agent: fix follow-up test parsing crash "JsonObject" — normalise followUpTests field to array even when LLM returns a single object instead of an array
+- AI Agent: fix applyTransformations() — now handles path, method, query, body keys so LLM-generated path traversal, IDOR, and method-change modifications are applied to the actual request
+- AI Agent: fix injectIdorPayload() — numeric path segments (/api/resource/123) now replaced when no query param ID is present
+- AI Agent: fix injectPathTraversal() — traversal sequence appended to path when no file=/path=/page= param exists
+- Workbench tab restored — was missing from MainPanel; "Send to LLM Workbench" context menu now correctly routes to the Workbench panel
+- Copy to clipboard buttons added across UI: Findings detail/request/response panes, OOB interaction log, Traffic Analyzer detail pane, Traffic Analyzer AI chat bubbles
 - Traffic Analyzer: path normalization — `/api/users/123` → `/api/users/{id}` for dedup and IDOR candidate surfacing
 - Traffic Analyzer: parameter extraction — query params, JSON body keys, form fields extracted per endpoint and included in LLM prompt
 - Traffic Analyzer: tech stack fingerprinting — Server, X-Powered-By, cookie patterns, framework hints, auth type detected and shown in summary + report
