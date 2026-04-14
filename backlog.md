@@ -47,6 +47,7 @@
 - Settings: live session usage panel — shows request count, token breakdown (in/out), estimated cost, and error count with Refresh and Reset buttons
 - Settings: max tokens raised to 32768 (was 8192); system prompt text area uses monospaced font
 - Project renamed to ELLIE (Exploit LLM Intelligence Engine) — named after Ellie from The Last of Us; updated extension name, UI header, context menu, README, CLAUDE.md, and pom.xml display name
+- Dead code removed: unused autoIntercept field + KEY_AUTO_INTERCEPT constant + getter/setter pair in ExtensionConfig; unused getComponent() in MainPanel; stale "LLM PenTest Assistant" references in ReportExporter HTML/Markdown footers replaced with ELLIE branding
 
 #to do
 
