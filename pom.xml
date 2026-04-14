@@ -6,7 +6,7 @@
 
     <groupId>com.llmpentest</groupId>
     <artifactId>ellie</artifactId>
-    <version>1.9.0</version>
+    <version>1.9.1</version>
     <packaging>jar</packaging>
 
     <name>ELLIE - Exploit LLM Intelligence Engine</name>

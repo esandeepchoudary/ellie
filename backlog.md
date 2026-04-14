@@ -55,6 +55,8 @@
 - AI Agent: Burp-aware system prompt — DEFAULT_SYSTEM_PROMPT now explicitly states ELLIE runs inside Burp Suite and can only execute tests as HTTP requests; includes what good vs bad test suggestions look like; PLANNER AGENT prompt now has hard constraints requiring every test case to be a single HTTP request modification with no external tools or OOB
 - AI Agent: horizontal scrollbar added to chat pane (was HORIZONTAL_SCROLLBAR_NEVER)
 - AI Agent: fixed horizontal overflow — chat panel now implements Scrollable (getScrollableTracksViewportWidth=true) so content fits the viewport width instead of expanding horizontally; removed 30px left indent on result/export cards
+- AI Agent: applyTransformations() audit — fixed modifyQueryParam() (was using full URL instead of path; rewrote to parse request line directly); fixed isHeader() removing "token"/"api-key"/"api-token" false positives; fixed form-encoded body injection branch; fixed SQLi/SSTI no-op fallback via injectIntoBodyOrAppend(); 13 new unit tests covering all transformation types
+- AI Agent: conversational test requests now route directly to the test plan flow — when a user types a test request ("test for XSS", "find SQL injection", etc.) with a request loaded, ELLIE skips the LLM chat round-trip and goes straight to the plan-first execution flow
 
 #to do
 
