@@ -48,6 +48,7 @@
 - Settings: max tokens raised to 32768 (was 8192); system prompt text area uses monospaced font
 - Project renamed to ELLIE (Exploit LLM Intelligence Engine) — named after Ellie from The Last of Us; updated extension name, UI header, context menu, README, CLAUDE.md, and pom.xml display name
 - Dead code removed: unused autoIntercept field + KEY_AUTO_INTERCEPT constant + getter/setter pair in ExtensionConfig; unused getComponent() in MainPanel; stale "LLM PenTest Assistant" references in ReportExporter HTML/Markdown footers replaced with ELLIE branding
+- Public release risk mitigation: artifactId renamed from llm-pentest-burp to ellie (JAR is now ellie-1.8.0.jar, removing PortSwigger trademark exposure); LICENSE file added (MIT + Apache 2.0 attribution); first-run consent dialog explains LLM data forwarding, OOB disclosure, and authorized-use requirement; OOB/interactsh gated behind explicit opt-in toggle (off by default); Apache 2.0 NOTICE transformer added to shade plugin
 
 #to do
 

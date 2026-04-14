@@ -12,7 +12,7 @@ mvn package -DskipTests
 mvn package
 
 # Output JAR  (name reflects current version in pom.xml)
-target/llm-pentest-burp-<version>.jar   ← artifact ID kept as llm-pentest-burp; display name is ELLIE
+target/ellie-<version>.jar
 ```
 
 Install into Burp Suite: **Extensions → Installed → Add → Java → select the JAR**.
@@ -55,13 +55,13 @@ mvn package -DskipTests
 
 # Create the release with the JAR attached
 gh release create v<VERSION> \
-  target/llm-pentest-burp-<VERSION>.jar \
+  target/ellie-<VERSION>.jar \
   --title "v<VERSION>" \
   --notes "<one-paragraph summary of what changed in this version>"
 ```
 
 - The tag must be `v<VERSION>` (e.g. `v1.5.1`) — always prefix with `v`.
-- Attach the shaded JAR (`target/llm-pentest-burp-<VERSION>.jar`) as the release asset so users can download it directly from GitHub.
+- Attach the shaded JAR (`target/ellie-<VERSION>.jar`) as the release asset so users can download it directly from GitHub.
 - The release notes should be a concise human-readable summary of the changes (not a raw commit log). Match the tone of the commit message but written for end users.
 - For bug-fix releases, the notes should clearly state what was broken and what was fixed.
 - Do **not** create a release for intermediate commits that don't bump the version.
