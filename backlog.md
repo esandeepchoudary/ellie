@@ -38,6 +38,7 @@
 - Traffic Analyzer: chunked analysis — large traffic sets analyzed in batches of 35 endpoints; results merged with vuln/proposal deduplication
 - Traffic Analyzer: auth mapping — endpoints without auth headers flagged as [NO-AUTH] in prompt to guide bypass testing
 - Traffic Analyzer: post-analysis chat — after analysis completes, a full chat panel appears below results; LLM has complete context of all endpoints, vulnerabilities, tech stack, and business logic; 6 quick-question chips for common questions; multi-turn conversation history
+- LLM provider integrations hardened: Anthropic temperature now sent; Groq/OpenAI get response_format:json_object, Custom does not; Custom provider no longer requires API key (supports unauthenticated local proxies); Ollama connection test and model fetch use configured endpoint instead of hardcoded localhost:11434; Settings checkboxes (in-scope only, skip static) now load saved state correctly
 
 #to do
 
