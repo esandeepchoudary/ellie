@@ -46,6 +46,25 @@ The project uses **semantic versioning** (`MAJOR.MINOR.PATCH`). Update the versi
 
 Bump `PATCH` for bug fixes, `MINOR` for new features, `MAJOR` for breaking changes.
 
+### GitHub releases
+After every version bump, create a GitHub release in the **same session** as the version commit:
+
+```bash
+# Build the release JAR first (tests must already be passing)
+mvn package -DskipTests
+
+# Create the release with the JAR attached
+gh release create v<VERSION> \
+  target/llm-pentest-burp-<VERSION>.jar \
+  --title "v<VERSION>" \
+  --notes "<one-paragraph summary of what changed in this version>"
+```
+
+- The tag must be `v<VERSION>` (e.g. `v1.5.0`) — always prefix with `v`.
+- Attach the shaded JAR (`target/llm-pentest-burp-<VERSION>.jar`) as the release asset so users can download it directly from GitHub.
+- The release notes should be a concise human-readable summary of the changes (not a raw commit log). Match the tone of the commit message but written for end users.
+- Do **not** create a release for intermediate commits that don't bump the version.
+
 ### When adding features or fixing bugs
 - **Read the file before editing it.** Never propose changes to code you haven't seen.
 - **Check all three LLM client touch points** when adding a new provider: `buildRequestBody()`, `buildHttpRequest()`, `extractContent()` in `LLMClient.java`, plus `ExtensionConfig.LLMProvider` enum + `getDefaultModel()`, plus `SettingsPanel.onProviderChange()`.
