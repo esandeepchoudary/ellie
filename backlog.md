@@ -21,6 +21,7 @@
 - AI Agent: auth refresh mid-run — on 401/403 during a non-auth-bypass test, restores original auth headers and retries once automatically
 - AI Agent: separate planner/tester agents — Planner Agent prompt (recon-first, 3-phase fingerprinting) and Tester Agent prompt (precise verification, no speculation)
 - AI Agent: token/cost budget — pre-run cost estimate shown in plan card, configurable hard cap per session via spinner; run halts when cap reached
+- AI Agent: actionable follow-up tests — when the AI's chat reply describes security tests, a "▶ Run These Tests" button appears below the bubble and feeds the reply as instructions into the planner
 
 #to do
 
