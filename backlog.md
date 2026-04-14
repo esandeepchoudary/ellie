@@ -22,7 +22,8 @@
 - AI Agent: separate planner/tester agents — Planner Agent prompt (recon-first, 3-phase fingerprinting) and Tester Agent prompt (precise verification, no speculation)
 - AI Agent: token/cost budget — pre-run cost estimate shown in plan card, configurable hard cap per session via spinner; run halts when cap reached
 - AI Agent: actionable follow-up tests — when the AI's chat reply describes security tests, a "▶ Run These Tests" button appears below the bubble and feeds the reply as instructions into the planner
-- AI Agent: fix test-case generation 400 json_validate_failed — prompts now request {"testCases":[...]} wrapper (compatible with OpenAI/Groq json_object mode); extractJsonArray() fallback handles bare-object and mixed-text responses
+- AI Agent: fix test-case generation 400 json_validate_failed (second fix) — removed "followUp" from prompt schema (LLM was emitting dangling followUp keys between array elements); added bracket-matching object extractor as extractJsonArray() strategy 5 so malformed wrappers no longer block test extraction
+- AI Agent: copy button added to AI chat bubbles (📋 in bottom-right corner of every AI response)
 - AI Agent: fix follow-up test parsing crash "JsonObject" — normalise followUpTests field to array even when LLM returns a single object instead of an array
 - AI Agent: result cards layout fixed — switched from BorderLayout (buttons in EAST were squeezed off-screen by CENTER text) to BoxLayout Y_AXIS with buttons on a dedicated third row; 🔍 Inspect and → Repeater are now always visible
 - AI Agent: fix applyTransformations() — now handles path, method, query, body keys so LLM-generated path traversal, IDOR, and method-change modifications are applied to the actual request
