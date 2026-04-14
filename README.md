@@ -101,7 +101,7 @@ Successful output ends with:
 
 The output JAR is at:
 ```
-target/llm-pentest-burp-1.7.2.jar
+target/llm-pentest-burp-1.7.3.jar
 ```
 
 ---
@@ -113,7 +113,7 @@ target/llm-pentest-burp-1.7.2.jar
 3. Under the **Installed** sub-tab, click **Add**.
 4. In the dialog that appears:
    - **Extension type**: `Java`
-   - **Extension file**: click **Select file…** and navigate to `target/llm-pentest-burp-1.7.2.jar`
+   - **Extension file**: click **Select file…** and navigate to `target/llm-pentest-burp-1.7.3.jar`
 5. Click **Next**.
 6. Watch the **Output** pane — you should see:
    ```
