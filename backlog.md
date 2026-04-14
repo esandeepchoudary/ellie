@@ -52,6 +52,7 @@
 - AI Agent: fix follow-up test parse crash "JsonObject" — guard non-object array elements with isJsonObject() check; handle top-level JSON array wrapper; tolerate non-primitive modification values; error log now includes exception class name
 - AI Agent: fix Inspect dialog follow-up chat — auto-scroll chatHistory after each append so responses are visible; give followInput keyboard focus on open; improve error message (class name fallback when message is null)
 - AI Agent: fix "Run These Tests" disconnect — suppress follow-up button when AI reply is an external-tool guide (ffuf, gobuster, nmap, etc.); rename button to "Generate ELLIE Tests from This" with tooltip clarifying ELLIE interprets suggestions into HTTP-level tests
+- AI Agent: Burp-aware system prompt — DEFAULT_SYSTEM_PROMPT now explicitly states ELLIE runs inside Burp Suite and can only execute tests as HTTP requests; includes what good vs bad test suggestions look like; PLANNER AGENT prompt now has hard constraints requiring every test case to be a single HTTP request modification with no external tools or OOB
 - AI Agent: horizontal scrollbar added to chat pane (was HORIZONTAL_SCROLLBAR_NEVER)
 - AI Agent: fixed horizontal overflow — chat panel now implements Scrollable (getScrollableTracksViewportWidth=true) so content fits the viewport width instead of expanding horizontally; removed 30px left indent on result/export cards
 
