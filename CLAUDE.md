@@ -47,7 +47,7 @@ The project uses **semantic versioning** (`MAJOR.MINOR.PATCH`). Update the versi
 Bump `PATCH` for bug fixes, `MINOR` for new features, `MAJOR` for breaking changes.
 
 ### GitHub releases
-After every version bump, create a GitHub release in the **same session** as the version commit:
+**Every version bump — including PATCH bug-fix releases — requires a GitHub release in the same session.** This applies to `MINOR` feature releases (1.4.0 → 1.5.0) and `PATCH` bug-fix releases (1.5.0 → 1.5.1) alike.
 
 ```bash
 # Build the release JAR first (tests must already be passing)
@@ -60,9 +60,10 @@ gh release create v<VERSION> \
   --notes "<one-paragraph summary of what changed in this version>"
 ```
 
-- The tag must be `v<VERSION>` (e.g. `v1.5.0`) — always prefix with `v`.
+- The tag must be `v<VERSION>` (e.g. `v1.5.1`) — always prefix with `v`.
 - Attach the shaded JAR (`target/llm-pentest-burp-<VERSION>.jar`) as the release asset so users can download it directly from GitHub.
 - The release notes should be a concise human-readable summary of the changes (not a raw commit log). Match the tone of the commit message but written for end users.
+- For bug-fix releases, the notes should clearly state what was broken and what was fixed.
 - Do **not** create a release for intermediate commits that don't bump the version.
 
 ### When adding features or fixing bugs
