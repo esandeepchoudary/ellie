@@ -24,6 +24,7 @@
 - AI Agent: actionable follow-up tests — when the AI's chat reply describes security tests, a "▶ Run These Tests" button appears below the bubble and feeds the reply as instructions into the planner
 - AI Agent: fix test-case generation 400 json_validate_failed — prompts now request {"testCases":[...]} wrapper (compatible with OpenAI/Groq json_object mode); extractJsonArray() fallback handles bare-object and mixed-text responses
 - AI Agent: fix follow-up test parsing crash "JsonObject" — normalise followUpTests field to array even when LLM returns a single object instead of an array
+- AI Agent: result cards — "Details" renamed to "🔍 Inspect" with tooltip; "→ Repeater" now sends the actual mutated request (not the PoC text description) to Burp Repeater
 - AI Agent: fix applyTransformations() — now handles path, method, query, body keys so LLM-generated path traversal, IDOR, and method-change modifications are applied to the actual request
 - AI Agent: fix injectIdorPayload() — numeric path segments (/api/resource/123) now replaced when no query param ID is present
 - AI Agent: fix injectPathTraversal() — traversal sequence appended to path when no file=/path=/page= param exists
