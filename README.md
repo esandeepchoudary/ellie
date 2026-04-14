@@ -114,7 +114,7 @@ Successful output ends with:
 
 The output JAR is at:
 ```
-target/ellie-1.8.2.jar
+target/ellie-1.9.0.jar
 ```
 
 ---
@@ -126,7 +126,7 @@ target/ellie-1.8.2.jar
 3. Under the **Installed** sub-tab, click **Add**.
 4. In the dialog that appears:
    - **Extension type**: `Java`
-   - **Extension file**: click **Select file…** and navigate to `target/ellie-1.8.2.jar`
+   - **Extension file**: click **Select file…** and navigate to `target/ellie-1.9.0.jar`
 5. Click **Next**.
 6. Watch the **Output** pane — you should see:
    ```
