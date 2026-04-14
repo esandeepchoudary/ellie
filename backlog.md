@@ -17,16 +17,12 @@
 - AI Agent: stop-at-first-finding — "Stop on 1st vuln" checkbox halts execution on the first confirmed vulnerability
 - AI Agent: export partial results on stop — "Export partial results?" dialog when user stops a run mid-way
 - AI Agent: keyboard shortcuts — Ctrl+Enter to send chat, Esc to stop active run
+- AI Agent: multi-request correlation — detects shared auth headers, CSRF tokens, and sequential resource IDs across loaded requests; shown in plan card before execution
+- AI Agent: auth refresh mid-run — on 401/403 during a non-auth-bypass test, restores original auth headers and retries once automatically
+- AI Agent: separate planner/tester agents — Planner Agent prompt (recon-first, 3-phase fingerprinting) and Tester Agent prompt (precise verification, no speculation)
+- AI Agent: token/cost budget — pre-run cost estimate shown in plan card, configurable hard cap per session via spinner; run halts when cap reached
 
 #to do
-
-## AI Agent — intelligence
-- Multi-request correlation: when multiple requests are loaded, detect CSRF token / session dependencies between them and sequence tests accordingly
-- Auth refresh mid-run: detect 401/403 responses caused by token expiry during a run and attempt automatic re-auth before retrying the failing test
-- Separate planner and tester agents: split into a planning agent (analyzes target, produces test plan) and an executor agent (runs tests, reports findings) running independently
-
-## AI Agent — UX
-- Token / cost budget: show estimated API cost before a run starts (based on request size × test count), enforce a configurable hard cap per session
 
 ## Passive Scanner
 - False positive memory: when a finding is marked FP by the user, record the pattern (URL + vuln type + parameter) and suppress future identical matches from the same endpoint automatically
