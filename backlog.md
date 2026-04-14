@@ -24,6 +24,12 @@
 - AI Agent: actionable follow-up tests — when the AI's chat reply describes security tests, a "▶ Run These Tests" button appears below the bubble and feeds the reply as instructions into the planner
 - AI Agent: fix test-case generation 400 json_validate_failed — prompts now request {"testCases":[...]} wrapper (compatible with OpenAI/Groq json_object mode); extractJsonArray() fallback handles bare-object and mixed-text responses
 - AI Agent: fix follow-up test parsing crash "JsonObject" — normalise followUpTests field to array even when LLM returns a single object instead of an array
+- Traffic Analyzer: path normalization — `/api/users/123` → `/api/users/{id}` for dedup and IDOR candidate surfacing
+- Traffic Analyzer: parameter extraction — query params, JSON body keys, form fields extracted per endpoint and included in LLM prompt
+- Traffic Analyzer: tech stack fingerprinting — Server, X-Powered-By, cookie patterns, framework hints, auth type detected and shown in summary + report
+- Traffic Analyzer: error endpoint priority — 5xx/4xx endpoints surfaced first in analysis prompt with response body snippets
+- Traffic Analyzer: chunked analysis — large traffic sets analyzed in batches of 35 endpoints; results merged with vuln/proposal deduplication
+- Traffic Analyzer: auth mapping — endpoints without auth headers flagged as [NO-AUTH] in prompt to guide bypass testing
 
 #to do
 
