@@ -60,6 +60,7 @@
 - AI Agent: confirmed vulnerabilities now auto-tracked — findings with a non-empty vulnerability field are automatically added to the shared Findings store (Dashboard + Findings table + Reports) as soon as each test result arrives; result cards show "✓ Tracked" badge; Inspect dialog shows "✓ Tracked in Findings"
 - Reports: added "AI Agent" to source filter dropdown; fixed getSelectedFindings() to use a parallel findings list keyed by row index instead of fragile truncated-URL string matching; added sourceLabel() helper for consistent source display
 - AI Agent: improved addToFindings() — title now includes vuln type + test name; uses mutatedRequest as raw request (actual HTTP sent); extracts real confidence from TestResult; sets evidence field from observation
+- Reports: improved HTML report — modern CSS, executive summary severity cards, collapsible raw request/response via <details>, metadata grid with all fields (ID, source, CWE link, CVE, method, status, timestamp, tags as badges), confidence bar, per-finding remediation; Markdown report — executive summary table, all metadata fields, raw request/response in http code blocks; JSON export — complete schema with id, timestamp, cve, method, status, rawRequest, rawResponse, tags array; CSV export added (RFC 4180, 18 columns covering all finding fields)
 
 #to do
 
@@ -76,7 +77,7 @@
 - OOB-to-request correlation: when a callback arrives, match it to the specific AI Agent test case that sent the payload and automatically link the interaction to the correct result card / finding
 
 ## Reporting
-- Executive summary: one-page LLM-generated non-technical narrative (risk headline, top 3 findings, recommended next steps) generated separately from the full findings report
+- Executive summary: LLM-generated non-technical narrative (risk headline, top 3 findings, recommended next steps) in a dedicated panel before the findings table
 - PDF export: convert the styled HTML report to PDF via the system print/save-as-PDF API
 
 ## Performance / Architecture
