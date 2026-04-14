@@ -1,4 +1,4 @@
-# CLAUDE.md
+# CLAUDE.md — ELLIE (Exploit LLM Intelligence Engine)
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -12,7 +12,7 @@ mvn package -DskipTests
 mvn package
 
 # Output JAR  (name reflects current version in pom.xml)
-target/llm-pentest-burp-<version>.jar
+target/llm-pentest-burp-<version>.jar   ← artifact ID kept as llm-pentest-burp; display name is ELLIE
 ```
 
 Install into Burp Suite: **Extensions → Installed → Add → Java → select the JAR**.

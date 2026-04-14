@@ -1,7 +1,18 @@
-# LLM PenTest Assistant — Burp Suite Extension
+# ELLIE — Exploit LLM Intelligence Engine
 
-> AI-powered web penetration testing automation via Large Language Models.  
+> AI-powered web penetration testing for Burp Suite.  
 > Supports Anthropic Claude, OpenAI GPT, Google Gemini, Groq, and Ollama (local models).
+
+---
+
+## The Name
+
+**ELLIE** stands for **E**xploit **L**LM **I**ntelligence **E**ngine.
+
+It's named after **Ellie** from *The Last of Us* — the character who is immune to threats that stop everyone else, and who finds the vulnerability in every situation. That's exactly what this tool does: it uses AI to find the weaknesses in web applications that automated scanners miss.
+
+> *"I've been through a lot of shit... but I am not gonna let this beat me."*  
+> — Ellie, *The Last of Us*
 
 ---
 
@@ -18,10 +29,12 @@
 | **Findings Table** | Sortable/filterable by severity with full-text search, bulk status changes, and full detail pane |
 | **Payload Generator** | 26 vuln types, WAF bypass variants, OOB payloads → Burp Intruder-ready |
 | **HTML/MD Reports** | Standalone styled HTML report or Markdown export of all findings |
-| **Context Menu** | Right-click any request in Proxy/Repeater → "🤖 LLM PenTest" submenu |
+| **Context Menu** | Right-click any request in Proxy/Repeater → "🤖 ELLIE" submenu |
 | **Multi-Provider** | Anthropic Claude, OpenAI GPT-4o, Google Gemini, Groq, Ollama, or any OpenAI-compatible endpoint |
 | **Fetch Models** | Pull available models directly from your provider and populate the model dropdown |
-| **Rate Limiting** | Configurable req/min with atomic enforcement to avoid burning API quota |
+| **Rate Limiting** | Configurable up to 2000 req/min with atomic enforcement |
+| **HTTP Proxy** | Route LLM API calls through a configurable proxy for corporate environments |
+| **Body Size Cap** | Configurable KB limit on content sent to LLM — prevents silent token-limit overflows |
 | **Persistent Settings** | All config saved in Burp's project-level preference store |
 
 ---
@@ -117,13 +130,13 @@ target/llm-pentest-burp-1.8.0.jar
 5. Click **Next**.
 6. Watch the **Output** pane — you should see:
    ```
-   ✓ LLM PenTest Assistant v1.7.0 loaded
+   ✓ ELLIE v1.8.0 loaded
      ✓ Passive scanner registered (Burp Pro)
      ✓ interactsh registered: <your-domain>.oast.pro
    ```
    On Community Edition the passive scanner line is replaced with a warning — all other features still work.
 
-A new **"LLM PenTest Assistant"** tab appears in Burp's main tab bar.
+A new **"ELLIE"** tab appears in Burp's main tab bar.
 
 ---
 
@@ -135,7 +148,7 @@ Open the **⚙️ Settings** tab inside the extension:
 2. Enter your **API Key** (not required for Ollama).
 3. Set the **Model** — click **Fetch Models** to pull available models from your provider and select from the dropdown.
 4. Click **🔍 Test Connection** to verify before scanning.
-5. Click **💾 Save Settings**.
+5. Click **💾 Save Settings** — ELLIE auto-tests the connection after every save and shows the result inline.
 
 **Ollama (local models):**
 - Start Ollama locally: `ollama serve`
@@ -164,9 +177,14 @@ Open the **⚙️ Settings** tab:
 
 - **In-scope only** — restricts passive scanning to Burp's target scope (recommended)
 - **Skip static resources** — skips .png, .css, .woff etc. (saves API tokens)
-- **Rate limit (req/min)** — enforced atomically; prevents hitting provider rate limits
+- **Rate limit (req/min)** — configurable up to 2000; enforced atomically (Groq ~300, OpenAI tier 4 ~5000)
 - **Min confidence (%)** — filters out low-confidence LLM findings before they appear in the table
-- **Concurrency** — parallel test threads used by the AI Agent (1–20)
+- **Concurrency** — parallel test threads used by the AI Agent (1–100)
+- **Body size cap (KB)** — max request/response bytes sent to the LLM per call (4–512 KB, default 32 KB)
+
+### HTTP Proxy
+
+Route all LLM API calls through an HTTP proxy — useful in corporate environments where outbound HTTPS to `api.anthropic.com` must go through a proxy. Configure host and port in Settings; changes apply immediately after Save.
 
 ---
 
@@ -198,7 +216,7 @@ The **🤖 AI Agent** tab provides a split-pane interface for conversational sec
 2. The request and response load into the left editor pane
 3. Ask a question in the chat or click a quick-action button
 4. Inline result cards appear for each test: status badge, test name, and action buttons
-5. Click **Details** for full traffic + follow-up chat, **→ Repeater** to send the PoC, or **+ Findings** to add the vulnerability to the main Findings table
+5. Click **🔍 Inspect** for full traffic + follow-up chat, **→ Repeater** to send the PoC, or **+ Findings** to add the vulnerability to the main Findings table
 
 When multiple requests are loaded, use the **< Prev / Next >** navigation in the top bar to switch between them — the AI always has context for the currently displayed request.
 
@@ -231,9 +249,9 @@ The **🎯 Traffic Analyzer** tab lets you:
 Right-click any request in Proxy, Repeater, or Intruder:
 
 ```
-🤖 LLM PenTest
+🤖 ELLIE
   ├── Send to AI Agent
-  ├── Send to LLM Workbench
+  ├── Send to Workbench
   ├── Analyze for Vulnerabilities
   ├── Explain Request/Response
   ├── AI: Targeted Scan on... (sub-menu with detected parameters)
@@ -246,7 +264,7 @@ Right-click any request in Proxy, Repeater, or Intruder:
 Right-click any **Finding** in Burp's Scanner results:
 
 ```
-🤖 LLM PenTest
+🤖 ELLIE
   └── AI: Analyze for False Positive
 ```
 

@@ -46,6 +46,7 @@
 - Settings: auto-test on save — connection test runs automatically in background after Save; result shown inline in status bar
 - Settings: live session usage panel — shows request count, token breakdown (in/out), estimated cost, and error count with Refresh and Reset buttons
 - Settings: max tokens raised to 32768 (was 8192); system prompt text area uses monospaced font
+- Project renamed to ELLIE (Exploit LLM Intelligence Engine) — named after Ellie from The Last of Us; updated extension name, UI header, context menu, README, CLAUDE.md, and pom.xml display name
 
 #to do
 

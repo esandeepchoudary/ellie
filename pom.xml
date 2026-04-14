@@ -9,8 +9,8 @@
     <version>1.8.0</version>
     <packaging>jar</packaging>
 
-    <name>LLM PenTest Assistant - Burp Suite Extension</name>
-    <description>AI-powered web penetration testing automation via Burp Suite</description>
+    <name>ELLIE - Exploit LLM Intelligence Engine</name>
+    <description>AI-powered web penetration testing for Burp Suite. Named after Ellie from The Last of Us.</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
