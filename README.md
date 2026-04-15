@@ -370,6 +370,12 @@ Update the following in order:
 
 ---
 
+## Built With
+
+This project was developed with [Claude Code](https://claude.ai/code) — Anthropic's AI coding assistant.
+
+---
+
 ## License
 
 [MIT License](LICENSE) © 2024 Sandeep Choudary. For authorized penetration testing use only. See the [Legal Notice](#legal-notice) section above for full disclaimers.
