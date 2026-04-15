@@ -40,7 +40,7 @@ It's named after **Ellie** from *The Last of Us* — the character who is immune
 | **False Positive Check** | Right-click any Burp finding → AI analysis to confirm if it's a true or false positive |
 | **Dashboard** | Vulnerability type breakdown, finding trend chart, duplicate-merged stats, recent findings |
 | **Findings Table** | Sortable/filterable by severity with full-text search, bulk status changes, and full detail pane |
-| **Payload Generator** | 26 vuln types, WAF bypass variants, OOB payloads → Burp Intruder-ready |
+| **Payload Generator** | 12 preset vuln types, WAF bypass variants, OOB payloads → Burp Intruder-ready |
 | **HTML/MD Reports** | Standalone styled HTML report or Markdown export of all findings |
 | **Context Menu** | Right-click any request in Proxy/Repeater → "🤖 ELLIE" submenu |
 | **Multi-Provider** | Anthropic Claude, OpenAI GPT-4o, Google Gemini, Groq, Ollama, or any OpenAI-compatible endpoint |
@@ -262,15 +262,16 @@ Right-click any request in Proxy, Repeater, or Intruder:
 
 ```
 🤖 ELLIE
-  ├── Send to AI Agent
-  ├── Send to Workbench
   ├── Analyze for Vulnerabilities
   ├── Explain Request/Response
   ├── AI: Targeted Scan on... (sub-menu with detected parameters)
-  └── Generate Payloads...
-        ├── SQL Injection
-        ├── XSS (Reflected)
-        └── ... (12 types)
+  ├── Generate Payloads...
+  │     ├── SQL Injection
+  │     ├── XSS (Reflected)
+  │     └── ... (12 types)
+  ├── Send to LLM Workbench
+  ├── Send to AI Agent
+  └── Send to Traffic Analyzer
 ```
 
 Right-click any **Finding** in Burp's Scanner results:
