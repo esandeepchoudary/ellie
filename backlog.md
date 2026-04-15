@@ -66,6 +66,7 @@
 - LLMScannerCheck: added null guard on getSeverity() at log line — f.getSeverity() != null ? f.getSeverity().label : "INFO"
 - Report HTML: fixed tag explosion — FindingDeduplicator.deduplicate() now clears stale "deduplicated"/"occurrences:N"/"sources:*" tags before re-annotating so repeated calls (on every Refresh/export) no longer accumulate hundreds of duplicate tags on the same Finding object; HTML renderer also deduplicates tags at render time as safety net
 - Report HTML: fixed <br> in <pre> blocks — escapeHtml() was converting \n → <br> everywhere including inside <pre> elements, causing every request/response line to be double-spaced; added escapeHtmlPre() for <pre> content that preserves newlines without adding <br>
+- Public release readiness: added Legal Notice section to README (PortSwigger independence, authorized-use requirement, export-control, cloud-LLM privacy, provider ToS links, community/best-effort statement); disclaimer line added to UI header in MainPanel; .gitignore expanded with credential/secret file patterns
 
 #to do
 

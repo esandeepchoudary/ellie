@@ -11,3 +11,16 @@ target/
 # OS
 .DS_Store
 Thumbs.db
+
+# Secrets and credentials — never commit these
+*.env
+.env.*
+*.properties
+*.key
+*.pem
+*.p12
+*.pfx
+credentials.json
+secrets.json
+config.local.*
+*.secret

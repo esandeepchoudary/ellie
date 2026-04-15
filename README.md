@@ -5,6 +5,22 @@
 
 ---
 
+## Legal Notice
+
+This software is an **independent, community-created extension** and is **not affiliated with, endorsed by, or sponsored by PortSwigger Ltd.** "Burp Suite" and related trademarks are the property of PortSwigger Ltd.
+
+**Authorized use only.** Use this tool only against systems for which you have **explicit, written authorization**. Unauthorized security testing may violate computer crime laws in your jurisdiction. The maintainers accept no liability for misuse, data loss, or regulatory compliance issues.
+
+**Export & regulatory compliance.** Users are responsible for compliance with any applicable export-control, cybersecurity, or data-protection laws in their jurisdiction.
+
+**Cloud LLM privacy.** Requests and response data analyzed via cloud LLM providers (Anthropic, OpenAI, Google, Groq) may be subject to those providers' logging and privacy policies. **Do not submit confidential or proprietary data to cloud models unless you are authorized to do so.** Use Ollama for air-gapped or sensitive environments.
+
+**Third-party provider terms.** Each LLM provider has its own Terms of Service that may restrict automated or security-related use. You are responsible for reviewing and complying with the ToS of your chosen provider: [Anthropic](https://www.anthropic.com/legal/usage-policy) · [OpenAI](https://openai.com/policies/usage-policies) · [Google](https://ai.google.dev/gemini-api/terms) · [Groq](https://groq.com/terms-of-service/).
+
+**Community project.** This is a community-driven project; support is provided on a best-effort basis. Contributions and bug reports via pull requests and issues are welcome.
+
+---
+
 ## The Name
 
 **ELLIE** stands for **E**xploit **L**LM **I**ntelligence **E**ngine.
@@ -356,5 +372,4 @@ Update the following in order:
 
 ## License
 
-MIT License. For authorized penetration testing use only.  
-The authors are not responsible for unauthorized use.
+[MIT License](LICENSE) © 2024 Sandeep Choudary. For authorized penetration testing use only. See the [Legal Notice](#legal-notice) section above for full disclaimers.
