@@ -64,6 +64,8 @@
 - Passive scanner: fixed system prompt mismatch — DEFAULT_SYSTEM_PROMPT is now a neutral security analyst prompt with no AI Agent execution-context instructions; AI Agent Burp-constraint context (EXECUTION ENVIRONMENT block) is injected only in buildHttpContextBlock() which is only called from chat requests; auto-migration resets any persisted v1.9.0 broken prompt on load
 - AI Agent: fixed isDirectTestRequest() false positives — removed "this"/"these"/"it" from security-term gate; these caused benign conversational messages ("check this endpoint", "verify it works") to be routed to test plan execution
 - LLMScannerCheck: added null guard on getSeverity() at log line — f.getSeverity() != null ? f.getSeverity().label : "INFO"
+- Report HTML: fixed tag explosion — FindingDeduplicator.deduplicate() now clears stale "deduplicated"/"occurrences:N"/"sources:*" tags before re-annotating so repeated calls (on every Refresh/export) no longer accumulate hundreds of duplicate tags on the same Finding object; HTML renderer also deduplicates tags at render time as safety net
+- Report HTML: fixed <br> in <pre> blocks — escapeHtml() was converting \n → <br> everywhere including inside <pre> elements, causing every request/response line to be double-spaced; added escapeHtmlPre() for <pre> content that preserves newlines without adding <br>
 
 #to do
 
