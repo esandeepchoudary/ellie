@@ -27,6 +27,9 @@ This software is an **independent, community-created extension** and is **not af
 
 It's named after **Ellie** from *The Last of Us* — the character who is immune to threats that stop everyone else, and who finds the vulnerability in every situation. That's exactly what this tool does: it uses AI to find the weaknesses in web applications that automated scanners miss.
 
+> *"After all we've been through. Everything that I've done. It can't be for nothing."*  
+> — Ellie, *The Last of Us*
+
 ---
 
 ## Features
